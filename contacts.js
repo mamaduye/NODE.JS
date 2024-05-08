@@ -1,6 +1,6 @@
 const fs = require('fs');
 const chalk =require('chalk');
-const validator =('validator');
+const validator =require('validator');
 // Readline
 // const readline = require('readline');
 // const rl = readline.createInterface({
@@ -72,7 +72,7 @@ const detailContact = (nama) => {
    const contacts = loadContact();
 
    const contact = contacts.find(
-    (contact) => contact.nama.toLoweCase() === nama.loweCase()
+    (contact) => contact.nama.toLowerCase() === nama.toLowerCase()
   );
 
   if(!contact){
@@ -86,22 +86,30 @@ const detailContact = (nama) => {
   if (contact.email){
     console.log(contact.email);
   }
+  
+  // const newContacts = contacts.filter(
+  //   (contact) => contact.nama.toLowerCase() !== nama.toLowerCase()
+  // );
 
-  fs.writeFileSync('data/contacts.json', JSON.stringify(newContacts));
+  // fs.writeFileSync('data/contacts.json', JSON.stringify(newContacts));
 
-  console.log(chalk.green.inverse.bold(`data contact ${nama} berhasil dihapus!`));
+  // console.log(chalk.green.inverse.bold(`data contact ${nama} berhasil dihapus!`));
 };
 
 const deleteContact = (nama) => {
   const contacts = loadContact();
   const newContacts = contacts.filter(
-    (contact) => contact.nama.toLoweCase() !== nama.toLoweCase()
-  );
+    (contact) => contact.nama.toLowerCase() !== nama.toLowerCase());
+    fs.writeFileSync('data/contacts.json', JSON.stringify(newContacts));
+    console.log(chalk.green.inverse.bold(`data contact ${nama} berhasil dihapus!`));
 
-  if(!contacts.lenght === newContacts.lenght){
+
+  if(!contacts.length === newContacts.length){
     console.log(chalk.red.inverse.bold(` ${nama} tidak ditemukkan!`));
     return false;
   }
+  
+  return newContacts;
 };
 
 module.exports = { simpanContact, listContact, detailContact, deleteContact }; 
